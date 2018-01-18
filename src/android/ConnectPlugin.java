@@ -304,7 +304,14 @@ public class ConnectPlugin extends CordovaPlugin {
             return true;
 
         } else if (action.equals("setPushNotificationsRegistrationId")) {
-            executeRegisterPushNotificationToken(args, callbackContext);
+            String token = args.getString(0);
+            try {
+                AppEventsLogger.setPushNotificationsRegistrationId(token);
+                callbackContext.success();
+            } catch (Exception e) {
+                Log.e("test", "Failed to register push notification token", e);
+                callbackContext.error("Failed to register push notification token");
+            }
             return true;
 
         } else if (action.equals("logEvent")) {
@@ -677,15 +684,6 @@ public class ConnectPlugin extends CordovaPlugin {
         } else {
             // Request new read permissions
             loginManager.logInWithReadPermissions(cordova.getActivity(), permissions);
-        }
-    }
-
-    private void executeRegisterPushNotificationToken(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String token = args.getString(0);
-        try {
-            AppEventsLogger.setPushNotificationsRegistrationId(token);
-        } catch (Exception e) {
-            Log.e("test", "Failed to complete token refresh", e);
         }
     }
 
