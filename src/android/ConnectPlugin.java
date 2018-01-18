@@ -303,6 +303,10 @@ public class ConnectPlugin extends CordovaPlugin {
             }
             return true;
 
+        } else if (action.equals("setPushNotificationsRegistrationId")) {
+            executeRegisterPushNotificationToken(args, callbackContext);
+            return true;
+
         } else if (action.equals("logEvent")) {
             executeLogEvent(args, callbackContext);
             return true;
@@ -673,6 +677,15 @@ public class ConnectPlugin extends CordovaPlugin {
         } else {
             // Request new read permissions
             loginManager.logInWithReadPermissions(cordova.getActivity(), permissions);
+        }
+    }
+
+    private void executeRegisterPushNotificationToken(JSONArray args, CallbackContext callbackContext) throws JSONException {
+        String token = args.getString(0);
+        try {
+            AppEventsLogger.setPushNotificationsRegistrationId(token);
+        } catch (Exception e) {
+            Log.e("test", "Failed to complete token refresh", e);
         }
     }
 

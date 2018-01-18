@@ -16,6 +16,15 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
   exec(s, f, 'FacebookConnectPlugin', 'checkHasCorrectPermissions', permissions)
 }
 
+exports.setPushNotificationsRegistrationId = function setPushNotificationsRegistrationId (token, s, f) {
+  // Added this function only to Android
+  if (token) {
+    exec(s, f, 'FacebookConnectPlugin', 'setPushNotificationsRegistrationId', [token])
+  } else {
+    f('Missing Argument: token')
+  }
+}
+
 exports.logEvent = function logEvent (name, params, valueToSum, s, f) {
   // Prevent NSNulls getting into iOS, messes up our [command.argument count]
   if (!params && !valueToSum) {
